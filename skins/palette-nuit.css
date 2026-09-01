@@ -1,0 +1,40 @@
+/*
+ * Skin « nuit » — violet profond + jaune vif (événementiel, livraison de nuit).
+ * Copier ces valeurs dans le bloc @theme de app/globals.css.
+ */
+@theme {
+  /* surface → gris ardoise froids */
+  --color-surface-50: #f6f6fa;
+  --color-surface-100: #e9e9f1;
+  --color-surface-200: #d6d6e4;
+  --color-surface-300: #b8b8cd;
+  --color-surface-400: #9494ad;
+  --color-surface-500: #70708a;
+  --color-surface-600: #55556b;
+  --color-surface-700: #3f3f51;
+  --color-surface-800: #2c2c3a;
+  --color-surface-900: #1d1d27;
+
+  /* primary → violet profond */
+  --color-primary-50: #f3f0fa;
+  --color-primary-100: #e2dbf3;
+  --color-primary-200: #c4b6e6;
+  --color-primary-300: #a08ad4;
+  --color-primary-400: #7d61c1;
+  --color-primary-500: #5f43a5;
+  --color-primary-600: #4c3487;
+  --color-primary-700: #3e2b6e;
+  --color-primary-800: #2d1f50;
+  --color-primary-900: #1d1435;
+
+  /* accent → jaune vif */
+  --color-accent-300: #ffe08a;
+  --color-accent-400: #ffd35c;
+  --color-accent-500: #f5b800;
+  --color-accent-600: #d9a300;
+  --color-accent-700: #b38600;
+
+  --color-panel: #ececf4;
+  --color-ink: #1f1b2e;
+  --color-ink-soft: #4e4863;
+}

@@ -1,0 +1,40 @@
+/*
+ * Skin « nature » — vert sauge + sable chaud (bien-être, jardin, éco-services).
+ * Copier ces valeurs dans le bloc @theme de app/globals.css.
+ */
+@theme {
+  /* surface → neutres sable */
+  --color-surface-50: #faf7f2;
+  --color-surface-100: #f1ebe1;
+  --color-surface-200: #e4dacb;
+  --color-surface-300: #cfc0aa;
+  --color-surface-400: #b09e84;
+  --color-surface-500: #8d7c64;
+  --color-surface-600: #6d5f4c;
+  --color-surface-700: #52473a;
+  --color-surface-800: #38312a;
+  --color-surface-900: #241f1b;
+
+  /* primary → vert sauge profond */
+  --color-primary-50: #f0f5f1;
+  --color-primary-100: #dbe8dd;
+  --color-primary-200: #b8d1bd;
+  --color-primary-300: #8db396;
+  --color-primary-400: #649270;
+  --color-primary-500: #477554;
+  --color-primary-600: #365d42;
+  --color-primary-700: #2b4c36;
+  --color-primary-800: #1f3727;
+  --color-primary-900: #14241a;
+
+  /* accent → terracotta douce */
+  --color-accent-300: #f2b899;
+  --color-accent-400: #ea9668;
+  --color-accent-500: #dd7742;
+  --color-accent-600: #c76233;
+  --color-accent-700: #a44e28;
+
+  --color-panel: #efe8db;
+  --color-ink: #26211c;
+  --color-ink-soft: #5b5248;
+}
