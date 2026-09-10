@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BeforeAfter } from "@/components/blocks/BeforeAfter";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -350,34 +351,7 @@ export function Gallery() {
 
           <div className="grid gap-4">
             {g.pairs.map((pair, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-2 gap-1 overflow-hidden rounded-2xl ring-1 ring-surface-50/15"
-              >
-                {(["before", "after"] as const).map((side) => (
-                  <figure
-                    key={side}
-                    className="relative aspect-[4/3] bg-primary-800"
-                  >
-                    <Image
-                      src={pair[side].src}
-                      alt={pair[side].alt}
-                      fill
-                      sizes="(min-width: 1024px) 30vw, 50vw"
-                      className="object-cover"
-                    />
-                    <figcaption
-                      className={`absolute left-3 top-3 rounded-md px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider ${
-                        side === "after"
-                          ? "bg-accent-500 text-on-accent"
-                          : "bg-primary-900/80 text-surface-50"
-                      }`}
-                    >
-                      {side === "before" ? "Avant" : "Après"}
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
+              <BeforeAfter key={i} before={pair.before} after={pair.after} />
             ))}
             {g.images.length > 0 ? (
               <ul className="grid grid-cols-2 gap-4">
