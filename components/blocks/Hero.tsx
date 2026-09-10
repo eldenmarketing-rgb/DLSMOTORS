@@ -128,7 +128,7 @@ export function Hero() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[70%_center]"
+            className="object-cover object-[80%_center]"
           />
         ) : (
           <div
@@ -139,7 +139,7 @@ export function Hero() {
         {/* Voile : lisibilité du texte à gauche, photo qui respire à droite. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-900/80 to-primary-900/20"
+          className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-900/85 via-40% to-primary-900/10"
         />
         <div
           aria-hidden="true"

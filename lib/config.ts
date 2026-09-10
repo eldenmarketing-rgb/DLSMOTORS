@@ -403,7 +403,10 @@ export const siteConfig: SiteConfig = {
       titleAccent: "le meilleur",
       text: "Nettoyage auto premium à Perpignan. Un véhicule plus propre, plus sain, plus valorisé.",
       secondaryLabel: "Voir nos prestations",
-      // image: { src: "/images/hero.jpg", alt: "Voiture noire lustrée devant le Castillet, Perpignan" },
+      image: {
+        src: "/images/hero.jpg",
+        alt: "Voiture noire lustrée devant le Castillet, Perpignan",
+      },
     },
     usps: [
       {
