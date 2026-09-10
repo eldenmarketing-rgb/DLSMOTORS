@@ -120,7 +120,7 @@ export function Hero() {
 
   if (hero.variant === "D") {
     return (
-      <section className="relative isolate flex min-h-[480px] items-center overflow-hidden bg-primary-900 text-surface-50 md:min-h-[560px] lg:min-h-[600px]">
+      <section className="relative isolate flex min-h-[480px] items-center overflow-hidden bg-primary-900 text-surface-50 md:min-h-[560px] lg:min-h-[640px]">
         {hero.image ? (
           <Image
             src={hero.image.src}
@@ -128,7 +128,7 @@ export function Hero() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[80%_center]"
+            className="object-cover object-[62%_78%]"
           />
         ) : (
           <div

@@ -405,7 +405,7 @@ export const siteConfig: SiteConfig = {
       secondaryLabel: "Voir nos prestations",
       image: {
         src: "/images/hero.jpg",
-        alt: "Voiture noire lustrée devant le Castillet, Perpignan",
+        alt: "Porsche noire lustrée devant le Castillet au coucher du soleil, Perpignan",
       },
     },
     usps: [
