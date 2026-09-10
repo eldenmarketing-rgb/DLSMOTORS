@@ -120,7 +120,7 @@ export function Hero() {
 
   if (hero.variant === "D") {
     return (
-      <section className="relative isolate flex min-h-[72vh] items-center overflow-hidden bg-primary-900 text-surface-50 md:min-h-[86vh]">
+      <section className="relative isolate flex min-h-[480px] items-center overflow-hidden bg-primary-900 text-surface-50 md:min-h-[560px] lg:min-h-[600px]">
         {hero.image ? (
           <Image
             src={hero.image.src}
@@ -146,18 +146,18 @@ export function Hero() {
           className="absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,var(--color-accent-500),transparent_50%)] opacity-15"
         />
 
-        <Container size="wide" className="relative py-24 sm:py-28 md:py-32">
-          <div className="max-w-2xl">
+        <Container size="wide" className="relative py-16 md:py-20">
+          <div className="max-w-xl">
             <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-400">
               <span aria-hidden="true">◆</span>
               {hero.badge}
             </p>
-            <HeroTitle className="mt-6 uppercase text-surface-50" />
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-surface-100/90">
+            <HeroTitle className="mt-5 uppercase text-surface-50 !text-[clamp(2.25rem,3.4vw+1rem,3.5rem)]" />
+            <p className="mt-5 max-w-lg text-[1.05rem] leading-relaxed text-surface-100/90">
               {hero.text}
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button href={telHref} variant="inverse" size="lg">
                 Appeler {siteConfig.phoneFormatted}
               </Button>
