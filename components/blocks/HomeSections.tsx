@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, type UspIcon } from "@/lib/config";
 import { listServices } from "@/lib/pages-list";
 
 /**
@@ -28,24 +28,55 @@ export function FlagFr() {
   );
 }
 
+const USP_ICONS: Record<UspIcon, string> = {
+  diamond: "M6 3h12l4 6-10 12L2 9l4-6zm1.5 2L5 8h14l-2.5-3h-9zM6.2 10 12 17.5 17.8 10H6.2z",
+  leaf: "M20 4c-8 0-14 4-15 12-.2 1.4 0 3 0 3s1-2.6 3-4c-.6 2.4-.3 4 .6 5 6-1 11-6 11-16zM7 19c2-6 6-9 10-11-4 1-9 4-10 11z",
+  home: "M12 3 2 11h3v9h6v-6h2v6h6v-9h3L12 3zm0 2.6L17 10v8h-2v-6H9v6H7v-8l5-4.4z",
+  shield: "M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm0 2.2 6 2.2V11c0 3.9-2.5 7.5-6 8.9-3.5-1.4-6-5-6-8.9V6.4l6-2.2zm-1.2 10.3-2.6-2.6 1.4-1.4 1.2 1.2 3.6-3.6 1.4 1.4-5 5z",
+  clock: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm-1 3h2v5.6l3.5 2-1 1.7L11 13.2V7z",
+  star: "m12 2 2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3l-6.1 3.3 1.4-6.8L2.2 9.1l6.9-.8L12 2z",
+};
+
+function UspGlyph({ icon }: { icon: UspIcon }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-accent-500/50 bg-accent-500/10 text-accent-400"
+    >
+      <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+        <path d={USP_ICONS[icon]} />
+      </svg>
+    </span>
+  );
+}
+
+/** Bandeau des atouts — prolonge le hero sombre, une ligne compacte, icône dorée. */
 export function Usps() {
   const { usps } = siteConfig.home;
   if (usps.length === 0) return null;
   return (
-    <Section tone="panel" spacing="compact">
-      <Container size="wide">
-        <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+    <section className="border-t border-surface-50/10 bg-primary-900 text-surface-50">
+      <Container size="wide" className="py-6 sm:py-7">
+        <ul className="grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-surface-50/10">
           {usps.map((item) => (
-            <li key={item.title}>
-              <p className="font-display text-xl text-ink">{item.title}</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                {item.body}
-              </p>
+            <li
+              key={item.title}
+              className="flex items-center gap-4 lg:px-6 lg:first:pl-0 lg:last:pr-0"
+            >
+              {item.icon ? <UspGlyph icon={item.icon} /> : null}
+              <div>
+                <p className="text-[0.95rem] font-semibold leading-tight text-surface-50">
+                  {item.title}
+                </p>
+                <p className="mt-1 text-xs leading-snug text-surface-100/65">
+                  {item.body}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
       </Container>
-    </Section>
+    </section>
   );
 }
 

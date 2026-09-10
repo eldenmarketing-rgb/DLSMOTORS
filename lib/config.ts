@@ -76,6 +76,9 @@ export interface NavItem {
  */
 export type HeroVariant = "A" | "B" | "C" | "D";
 
+/** Icônes disponibles pour le bandeau des atouts. */
+export type UspIcon = "diamond" | "leaf" | "home" | "shield" | "clock" | "star";
+
 /** Blocs disponibles pour composer l'accueil — l'ordre est libre. */
 export type HomeBlock =
   | "hero"
@@ -180,7 +183,8 @@ export interface SiteConfig {
       image?: ImageRef;
       secondaryLabel: string;
     };
-    usps: { title: string; body: string }[];
+    /** Icône d'atout (tracés SVG intégrés, components/blocks/HomeSections.tsx). */
+    usps: { title: string; body: string; icon?: UspIcon }[];
     /** Mention sous les boutons du hero, précédée d'un drapeau français. */
     localBadge?: string;
     intro: { badge: string; title: string; paragraphs: string[] };
@@ -412,20 +416,24 @@ export const siteConfig: SiteConfig = {
     },
     usps: [
       {
+        icon: "diamond",
         title: "Résultat haut de gamme",
-        body: "Un travail soigné, jusque dans les moindres recoins.",
+        body: "Soigné jusque dans les recoins.",
       },
       {
+        icon: "leaf",
         title: "Produits éco-responsables",
-        body: "Des produits respectueux de votre véhicule et de l'environnement.",
+        body: "Doux pour le véhicule et l'environnement.",
       },
       {
+        icon: "home",
         title: "À domicile ou sur notre centre",
-        body: "Nous venons à vous, ou vous nous confiez votre véhicule à Perpignan.",
+        body: "À Perpignan et alentours.",
       },
       {
+        icon: "shield",
         title: "Satisfaction garantie",
-        body: "Vous repartez avec un véhicule qui vous plaît, sinon on y retourne.",
+        body: "Sinon on y retourne.",
       },
     ],
     localBadge: "Entreprise locale basée à Perpignan",
