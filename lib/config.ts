@@ -181,6 +181,8 @@ export interface SiteConfig {
       secondaryLabel: string;
     };
     usps: { title: string; body: string }[];
+    /** Mention à droite du bandeau des atouts, précédée d'un drapeau français. */
+    localBadge?: string;
     intro: { badge: string; title: string; paragraphs: string[] };
     servicesSection: {
       badge: string;
@@ -426,6 +428,7 @@ export const siteConfig: SiteConfig = {
         body: "Vous repartez avec un véhicule qui vous plaît, sinon on y retourne.",
       },
     ],
+    localBadge: "Entreprise locale basée à Perpignan",
     intro: {
       badge: "Notre métier",
       title: "Plus qu'un nettoyage, une nouvelle expérience.",
