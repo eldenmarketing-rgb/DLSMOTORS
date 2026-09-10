@@ -120,26 +120,33 @@ export function Hero() {
 
   if (hero.variant === "D") {
     return (
-      <section className="relative isolate flex min-h-[480px] items-center overflow-hidden bg-primary-900 text-surface-50 md:min-h-[560px] lg:min-h-[640px]">
+      <section className="relative isolate flex min-h-[440px] items-center overflow-hidden bg-primary-900 text-surface-50 md:min-h-[500px] lg:min-h-[560px]">
         {hero.image ? (
-          <Image
-            src={hero.image.src}
-            alt={hero.image.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[62%_78%]"
-          />
+          /* Mobile : la photo couvre le bandeau. Dès md : image ENTIÈRE
+             (ratio conservé) calée à droite, fondue sur son bord gauche vers
+             le fond sombre — jamais zoomée sur grand écran. */
+          <div className="absolute inset-y-0 right-0 w-full md:w-auto md:aspect-[16/9] md:[mask-image:linear-gradient(to_right,transparent,black_35%)]">
+            <Image
+              src={hero.image.src}
+              alt={hero.image.alt}
+              fill
+              priority
+              sizes="(min-width: 768px) 1100px, 100vw"
+              className="object-cover object-[62%_center] md:object-contain md:object-right"
+            />
+          </div>
         ) : (
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-900"
           />
         )}
-        {/* Voile : lisibilité du texte à gauche, photo qui respire à droite. */}
+        {/* Voile : lisibilité du texte à gauche, photo qui respire à droite ;
+            plus dense sur mobile où le texte passe sur la photo. */}
+        <div aria-hidden="true" className="absolute inset-0 bg-primary-900/55 md:hidden" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-900/85 via-40% to-primary-900/10"
+          className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-900/70 via-35% to-transparent to-65%"
         />
         <div
           aria-hidden="true"

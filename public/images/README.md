@@ -5,7 +5,7 @@ Les fichiers de ce dossier sont des **découpes basse définition du mockup**
 
 | Fichier | Usage | Format conseillé |
 |---|---|---|
-| `hero.jpg` (absent) | fond du hero (`home.hero.image` dans lib/config.ts, ligne commentée) | 1920×1080, sujet à droite |
+| `hero-castillet.jpg` | fond du hero (`home.hero.image` dans lib/config.ts) | 1920×1080, sujet à droite |
 | `prestations/*.jpg` | cartes des 4 formules (accueil) | 800×600 |
 | `equipe.jpg` | photo du bloc « Pourquoi nous » | 900×1100 (portrait) |
 | `realisations/siege-avant.jpg` / `siege-apres.jpg` | paire avant / après | 800×600, même cadrage |
