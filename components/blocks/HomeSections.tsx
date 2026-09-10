@@ -15,7 +15,7 @@ import { listServices } from "@/lib/pages-list";
 const telHref = `tel:${siteConfig.phone}`;
 
 /** Drapeau français en CSS — pas d'emoji (rendu différent selon l'OS). */
-function FlagFr() {
+export function FlagFr() {
   return (
     <span
       aria-hidden="true"
@@ -29,15 +29,12 @@ function FlagFr() {
 }
 
 export function Usps() {
-  const { usps, localBadge } = siteConfig.home;
+  const { usps } = siteConfig.home;
   if (usps.length === 0) return null;
   return (
     <Section tone="panel" spacing="compact">
-      <Container
-        size="wide"
-        className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between"
-      >
-        <ul className="grid flex-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+      <Container size="wide">
+        <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
           {usps.map((item) => (
             <li key={item.title}>
               <p className="font-display text-xl text-ink">{item.title}</p>
@@ -47,12 +44,6 @@ export function Usps() {
             </li>
           ))}
         </ul>
-        {localBadge ? (
-          <p className="inline-flex items-center gap-3 self-start rounded-full border border-ink/10 bg-surface-50 px-4 py-2 text-sm font-medium text-ink lg:mt-1 lg:shrink-0">
-            <FlagFr />
-            {localBadge}
-          </p>
-        ) : null}
       </Container>
     </Section>
   );

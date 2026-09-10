@@ -181,7 +181,7 @@ export interface SiteConfig {
       secondaryLabel: string;
     };
     usps: { title: string; body: string }[];
-    /** Mention à droite du bandeau des atouts, précédée d'un drapeau français. */
+    /** Mention sous les boutons du hero, précédée d'un drapeau français. */
     localBadge?: string;
     intro: { badge: string; title: string; paragraphs: string[] };
     servicesSection: {

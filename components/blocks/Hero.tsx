@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { siteConfig } from "@/lib/config";
+import { FlagFr } from "@/components/blocks/HomeSections";
 
 /**
  * Quatre squelettes de hero — choisir par site (`home.hero.variant`) pour que
@@ -176,6 +177,12 @@ export function Hero() {
                 <span aria-hidden="true">→</span>
               </Link>
             </div>
+            {siteConfig.home.localBadge ? (
+              <p className="mt-8 inline-flex items-center gap-3 text-sm text-surface-100/85">
+                <FlagFr />
+                {siteConfig.home.localBadge}
+              </p>
+            ) : null}
           </div>
         </Container>
       </section>
