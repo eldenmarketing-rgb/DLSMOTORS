@@ -33,7 +33,7 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
               {siteConfig.catalog.soldOutLabel}
             </span>
           ) : product.featured ? (
-            <span className="absolute left-3 top-3 rounded-full bg-accent-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+            <span className="absolute left-3 top-3 rounded-full bg-accent-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-on-accent shadow-sm">
               Populaire
             </span>
           ) : null}
@@ -63,7 +63,7 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
           ) : (
             <a
               href={telHref}
-              className="flex items-center justify-center gap-1.5 rounded-full bg-accent-500 px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-accent-600 hover:shadow-md"
+              className="flex items-center justify-center gap-1.5 rounded-full bg-accent-500 px-5 py-2.5 text-xs font-bold text-on-accent shadow-sm transition-all hover:bg-accent-600 hover:shadow-md"
             >
               {siteConfig.catalog.ctaLabel}
             </a>

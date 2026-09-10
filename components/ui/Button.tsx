@@ -16,12 +16,12 @@ const base =
 
 const variantMap: Record<Variant, string> = {
   primary:
-    'bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-offset-surface-50',
+    'bg-accent-500 text-on-accent hover:bg-accent-600 focus-visible:ring-offset-surface-50',
   secondary:
     'border-2 border-primary-700 bg-white text-primary-700 hover:bg-primary-50 focus-visible:ring-offset-surface-50',
   ghost: 'text-ink hover:text-accent-600',
   inverse:
-    'bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-offset-primary-800',
+    'bg-accent-500 text-on-accent hover:bg-accent-600 focus-visible:ring-offset-primary-800',
 }
 
 const sizeMap: Record<Size, string> = {

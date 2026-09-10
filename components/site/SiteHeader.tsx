@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -8,6 +9,40 @@ import { Button } from "@/components/ui/Button";
 import { siteConfig } from "@/lib/config";
 
 const primaryNav = siteConfig.navigation.filter((n) => n.href !== "/");
+const dark = siteConfig.theme.header === "dark";
+
+/** Logo image si fourni, sinon le nom du site (et son sous-titre) en texte. */
+function Brand() {
+  const { logo, name, brandSubtitle } = siteConfig;
+  if (logo) {
+    return (
+      <Image
+        src={logo.src}
+        alt={logo.alt || name}
+        width={logo.width}
+        height={logo.height}
+        priority
+        className="h-9 w-auto sm:h-11"
+      />
+    );
+  }
+  return (
+    <span className="flex flex-col leading-none">
+      <span
+        className={`font-display text-2xl tracking-tight ${dark ? "text-surface-50" : "text-ink"}`}
+      >
+        {name}
+      </span>
+      {brandSubtitle ? (
+        <span
+          className={`mt-1 whitespace-nowrap text-[9px] font-medium uppercase tracking-[0.16em] sm:text-[10px] sm:tracking-[0.2em] ${dark ? "text-accent-400" : "text-ink-soft"}`}
+        >
+          {brandSubtitle}
+        </span>
+      ) : null}
+    </span>
+  );
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -22,7 +57,13 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/5 bg-surface-50/95">
+    <header
+      className={`sticky top-0 z-40 border-b ${
+        dark
+          ? "border-surface-50/10 bg-primary-900/95 text-surface-50"
+          : "border-ink/5 bg-surface-50/95 text-ink"
+      }`}
+    >
       {/* data-nosnippet : le header (dont le menu mobile) est du boilerplate,
           il ne doit jamais servir d'extrait SERP. */}
       <Container
@@ -30,21 +71,19 @@ export function SiteHeader() {
         className="flex h-16 items-center justify-between sm:h-20"
         data-nosnippet
       >
-        <Link
-          href="/"
-          aria-label={`${siteConfig.name} — accueil`}
-          className="font-display text-2xl tracking-tight text-ink"
-        >
-          {siteConfig.name}
+        <Link href="/" aria-label={`${siteConfig.name} — accueil`}>
+          <Brand />
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden md:block">
-          <ul className="flex items-center gap-8 text-sm text-ink-soft">
+          <ul
+            className={`flex items-center gap-8 text-sm ${dark ? "text-surface-100/80" : "text-ink-soft"}`}
+          >
             {primaryNav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="transition-colors hover:text-ink"
+                  className={`transition-colors ${dark ? "hover:text-accent-400" : "hover:text-ink"}`}
                 >
                   {item.label}
                 </Link>
@@ -59,20 +98,24 @@ export function SiteHeader() {
             href={`tel:${siteConfig.phone}`}
             size="sm"
             variant="primary"
-            className="hidden sm:inline-flex"
+            className="max-sm:hidden"
           >
-            Appeler
+            {siteConfig.labels.headerCta ?? "Appeler"}
           </Button>
 
           <details ref={detailsRef} className="group relative md:hidden">
             <summary
               aria-label="Menu"
-              className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-md border border-ink/15 text-ink transition-colors hover:border-ink/30 hover:bg-surface-100 group-open:border-ink/40 group-open:bg-surface-100 [&::-webkit-details-marker]:hidden"
+              className={`flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-md border transition-colors [&::-webkit-details-marker]:hidden ${
+                dark
+                  ? "border-surface-50/25 text-surface-50 hover:border-surface-50/50 group-open:border-surface-50/60"
+                  : "border-ink/15 text-ink hover:border-ink/30 hover:bg-surface-100 group-open:border-ink/40 group-open:bg-surface-100"
+              }`}
             >
               <span aria-hidden="true" className="relative block h-4 w-5">
-                <span className="absolute left-0 top-0 h-[2px] w-full rounded bg-ink transition-transform group-open:top-[7px] group-open:rotate-45" />
-                <span className="absolute left-0 top-[7px] h-[2px] w-full rounded bg-ink transition-opacity group-open:opacity-0" />
-                <span className="absolute left-0 top-[14px] h-[2px] w-full rounded bg-ink transition-transform group-open:top-[7px] group-open:-rotate-45" />
+                <span className="absolute left-0 top-0 h-[2px] w-full rounded bg-current transition-transform group-open:top-[7px] group-open:rotate-45" />
+                <span className="absolute left-0 top-[7px] h-[2px] w-full rounded bg-current transition-opacity group-open:opacity-0" />
+                <span className="absolute left-0 top-[14px] h-[2px] w-full rounded bg-current transition-transform group-open:top-[7px] group-open:-rotate-45" />
               </span>
             </summary>
 

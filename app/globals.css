@@ -12,45 +12,47 @@
  *
  * Changer de skin = remplacer ce bloc @theme (voir skins/ et docs/SKINS.md).
  * RÈGLE ANTI-FOOTPRINT : jamais deux sites du réseau avec la même palette
- * ET les mêmes fontes. Palette par défaut : « artisan » (bleu travail +
- * orange chantier).
+ * ET les mêmes fontes. Palette de ce site : « atelier premium » (charbon +
+ * or, neutres chauds). `on-accent` = couleur du texte posé sur l'accent
+ * (l'or exige un texte sombre).
  */
 
 @theme {
-  /* surface → neutres gris froids */
-  --color-surface-50: #f4f6f8;
-  --color-surface-100: #e6eaef;
-  --color-surface-200: #d5dbe2;
-  --color-surface-300: #b9c2cc;
-  --color-surface-400: #94a0ad;
-  --color-surface-500: #6e7a87;
-  --color-surface-600: #515c68;
-  --color-surface-700: #3c454f;
-  --color-surface-800: #2a313a;
-  --color-surface-900: #1c2127;
+  /* surface → neutres chauds (sections claires du site) */
+  --color-surface-50: #f7f6f3;
+  --color-surface-100: #edebe6;
+  --color-surface-200: #dedbd3;
+  --color-surface-300: #c4c0b5;
+  --color-surface-400: #a19c8f;
+  --color-surface-500: #7d786c;
+  --color-surface-600: #5f5b51;
+  --color-surface-700: #47443c;
+  --color-surface-800: #302e29;
+  --color-surface-900: #1e1d1a;
 
-  /* primary → bleu travail */
-  --color-primary-50: #edf2f7;
-  --color-primary-100: #d6e1ed;
-  --color-primary-200: #aec4db;
-  --color-primary-300: #7fa1c2;
-  --color-primary-400: #5180a8;
-  --color-primary-500: #2f628f;
-  --color-primary-600: #244f73;
-  --color-primary-700: #1e4e79;
-  --color-primary-800: #16384f;
-  --color-primary-900: #0e2233;
+  /* primary → charbon (panneaux sombres, header, footer) */
+  --color-primary-50: #f2f2f1;
+  --color-primary-100: #e0dfdc;
+  --color-primary-200: #bfbdb8;
+  --color-primary-300: #8f8d87;
+  --color-primary-400: #605e59;
+  --color-primary-500: #3b3a37;
+  --color-primary-600: #2a2927;
+  --color-primary-700: #1f1e1c;
+  --color-primary-800: #161615;
+  --color-primary-900: #0d0d0c;
 
-  /* accent → orange chantier */
-  --color-accent-300: #fdba8c;
-  --color-accent-400: #fb9b5a;
-  --color-accent-500: #f97316;
-  --color-accent-600: #ea670c;
-  --color-accent-700: #c2540a;
+  /* accent → or (CTA, prix, étoiles) — texte sombre dessus */
+  --color-accent-300: #f0d78a;
+  --color-accent-400: #e6c45f;
+  --color-accent-500: #d9b34a;
+  --color-accent-600: #c39c34;
+  --color-accent-700: #9c7b22;
+  --color-on-accent: #141311;
 
-  --color-panel: #e9edf2;
-  --color-ink: #1f2933;
-  --color-ink-soft: #4a5562;
+  --color-panel: #efede8;
+  --color-ink: #141311;
+  --color-ink-soft: #4d4a43;
 
   /* ── Typographie ──
      --font-body / --font-heading sont posées par next/font dans app/layout.tsx.
@@ -58,6 +60,7 @@
      jamais laisser le navigateur retomber sur Times New Roman. */
   --font-sans: var(--font-body, ui-sans-serif), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-heading, ui-sans-serif), var(--font-body, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-accent, cursive), "Segoe Script", "Bradley Hand", cursive;
 
   --text-display: clamp(2.5rem, 4vw + 1rem, 4.5rem);
   --text-display--line-height: 1.05;
@@ -116,4 +119,9 @@ body {
   font-family: var(--font-display);
   font-weight: 800;
   letter-spacing: -0.02em;
+}
+
+.font-script {
+  font-family: var(--font-script);
+  font-weight: 500;
 }

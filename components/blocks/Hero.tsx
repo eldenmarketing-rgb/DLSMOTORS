@@ -6,13 +6,34 @@ import { Container } from "@/components/ui/Container";
 import { siteConfig } from "@/lib/config";
 
 /**
- * Trois squelettes de hero — choisir par site (`home.hero.variant`) pour que
+ * Quatre squelettes de hero — choisir par site (`home.hero.variant`) pour que
  * deux sites du réseau n'aient jamais la même ligne de flottaison.
  *
  *   A — panneau sombre plein écran, dégradé, sans image (Debarras)
  *   B — split : texte à gauche, image à droite (requiert `hero.image`)
  *   C — clair et minimal, image en bandeau sous le texte (image optionnelle)
+ *   D — photo plein écran sous un voile sombre, texte à gauche (image
+ *       optionnelle : sans elle, dégradé charbon + halo d'accent)
  */
+
+const titleClass =
+  "font-display text-[length:var(--text-display)] leading-[var(--text-display--line-height)] tracking-[var(--text-display--letter-spacing)]";
+
+/** Titre du hero, avec la fin en couleur d'accent quand `titleAccent` est posé. */
+function HeroTitle({ className }: { className: string }) {
+  const { hero } = siteConfig.home;
+  return (
+    <h1 className={`${titleClass} ${className}`}>
+      {hero.title}
+      {hero.titleAccent ? (
+        <>
+          {" "}
+          <span className="text-accent-500">{hero.titleAccent}</span>
+        </>
+      ) : null}
+    </h1>
+  );
+}
 
 export function Hero() {
   const { hero } = siteConfig.home;
@@ -28,9 +49,7 @@ export function Hero() {
         >
           <div>
             <Badge tone="primary">{hero.badge}</Badge>
-            <h1 className="mt-6 font-display text-[length:var(--text-display)] leading-[var(--text-display--line-height)] tracking-[var(--text-display--letter-spacing)] text-ink">
-              {hero.title}
-            </h1>
+            <HeroTitle className="mt-6 text-ink" />
             <p className="mt-6 text-lg leading-relaxed text-ink-soft">
               {hero.text}
             </p>
@@ -68,9 +87,7 @@ export function Hero() {
           className="py-16 text-center sm:py-20 md:py-24"
         >
           <Badge tone="panel">{hero.badge}</Badge>
-          <h1 className="mx-auto mt-6 max-w-3xl font-display text-[length:var(--text-display)] leading-[var(--text-display--line-height)] tracking-[var(--text-display--letter-spacing)] text-ink">
-            {hero.title}
-          </h1>
+          <HeroTitle className="mx-auto mt-6 max-w-3xl text-ink" />
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
             {hero.text}
           </p>
@@ -101,6 +118,63 @@ export function Hero() {
     );
   }
 
+  if (hero.variant === "D") {
+    return (
+      <section className="relative isolate flex min-h-[72vh] items-center overflow-hidden bg-primary-900 text-surface-50 md:min-h-[86vh]">
+        {hero.image ? (
+          <Image
+            src={hero.image.src}
+            alt={hero.image.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[70%_center]"
+          />
+        ) : (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-900"
+          />
+        )}
+        {/* Voile : lisibilité du texte à gauche, photo qui respire à droite. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-900/80 to-primary-900/20"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,var(--color-accent-500),transparent_50%)] opacity-15"
+        />
+
+        <Container size="wide" className="relative py-24 sm:py-28 md:py-32">
+          <div className="max-w-2xl">
+            <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-400">
+              <span aria-hidden="true">◆</span>
+              {hero.badge}
+            </p>
+            <HeroTitle className="mt-6 uppercase text-surface-50" />
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-surface-100/90">
+              {hero.text}
+            </p>
+
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Button href={telHref} variant="inverse" size="lg">
+                Appeler {siteConfig.phoneFormatted}
+              </Button>
+              <Link
+                href={sectionHref}
+                className="inline-flex items-center gap-2 rounded-md border border-surface-50/30 bg-surface-50/5 px-6 py-4 text-sm font-semibold text-surface-50 backdrop-blur-sm transition-colors hover:border-accent-400 hover:text-accent-300"
+              >
+                {hero.secondaryLabel}
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
   // Variante A (défaut) — panneau sombre plein écran.
   return (
     <section className="relative isolate flex min-h-[68vh] items-center overflow-hidden bg-ink text-surface-50 md:min-h-[80vh]">
@@ -121,9 +195,7 @@ export function Hero() {
           >
             {hero.badge}
           </Badge>
-          <h1 className="mt-6 font-display text-[length:var(--text-display)] leading-[var(--text-display--line-height)] tracking-[var(--text-display--letter-spacing)] text-surface-50">
-            {hero.title}
-          </h1>
+          <HeroTitle className="mt-6 text-surface-50" />
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-surface-100/90">
             {hero.text}
           </p>

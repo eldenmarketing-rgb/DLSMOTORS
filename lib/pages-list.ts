@@ -1,5 +1,5 @@
 import { SECTION_PREFIX, getAllCmsPages } from "@/lib/cms";
-import { siteConfig } from "@/lib/config";
+import { siteConfig, type ImageRef } from "@/lib/config";
 
 /**
  * La liste des services telle que le site l'affiche — hub `/<sectionRoot>`,
@@ -26,6 +26,10 @@ export interface ServiceCard {
   badges: string;
   featured: boolean;
   source: "code" | "cms";
+  /** Visuel, prix et pastille — portés par le code seulement (lib/config.ts). */
+  image?: ImageRef;
+  price?: string;
+  highlight?: string;
 }
 
 export async function listServices(): Promise<ServiceCard[]> {
@@ -39,6 +43,9 @@ export async function listServices(): Promise<ServiceCard[]> {
     badges: `${s.badgeLeft} · ${s.badgeRight}`,
     featured: s.featured === true,
     source: "code",
+    image: s.image,
+    price: s.price,
+    highlight: s.highlight,
   }));
 
   const known = new Set(fromCode.map((s) => s.slug));

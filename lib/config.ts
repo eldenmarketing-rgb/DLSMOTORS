@@ -1,16 +1,15 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  LE fichier à remplir pour instancier un site.
+ *  D&L.S MOTORS — nettoyage & esthétique automobile, Perpignan.
+ *  Instancié depuis site-starter (remote `template`).
  * ═══════════════════════════════════════════════════════════════════
  *
  * Tout ce qui est spécifique au site vit ici (et dans le skin,
- * app/globals.css). Le reste du code est générique et ne devrait pas
- * être modifié : les corrections se font dans le template et se
- * propagent aux prochains sites.
+ * app/globals.css + fontes de app/layout.tsx). Le reste du code est
+ * générique : les corrections se font dans le template.
  *
- * Les valeurs ci-dessous sont celles du site de démonstration
- * (`siteKey: "starter-demo"`) : elles montrent le format attendu.
- * Checklist complète d'instanciation : docs/NOUVEAU-SITE.md.
+ * Champs À VALIDER avant mise en ligne (valeurs reprises du mockup) :
+ *   phone / phoneFormatted, url, email, openingHours, cta.points.
  */
 
 export type SchemaType =
@@ -18,6 +17,7 @@ export type SchemaType =
   | "AutoRepair"
   | "AutoBodyShop"
   | "AutoDealer"
+  | "AutoWash"
   | "HealthAndBeautyBusiness"
   | "TaxiService"
   | "Restaurant"
@@ -54,6 +54,12 @@ export interface ServiceDef {
   /** Étiquette droite de la carte (ex. « Devis gratuit »). */
   badgeRight: string;
   featured?: boolean;
+  /** Visuel de la carte (accueil + hub). */
+  image?: ImageRef;
+  /** Prix affiché sur la carte (« À partir de 49 € », « Sur devis »). */
+  price?: string;
+  /** Pastille mise en avant sur la carte (« Le plus populaire »). */
+  highlight?: string;
 }
 
 export interface NavItem {
@@ -61,8 +67,14 @@ export interface NavItem {
   href: string;
 }
 
-/** Squelette visuel du hero — varier d'un site à l'autre (anti-footprint). */
-export type HeroVariant = "A" | "B" | "C";
+/**
+ * Squelette visuel du hero — varier d'un site à l'autre (anti-footprint).
+ *   A — panneau sombre, dégradé, sans image
+ *   B — split texte / image
+ *   C — clair, image en bandeau
+ *   D — photo plein écran sous voile sombre (image optionnelle : dégradé sinon)
+ */
+export type HeroVariant = "A" | "B" | "C" | "D";
 
 /** Blocs disponibles pour composer l'accueil — l'ordre est libre. */
 export type HomeBlock =
@@ -73,6 +85,7 @@ export type HomeBlock =
   | "catalog"
   | "why"
   | "reviews"
+  | "gallery"
   | "faq"
   | "cta";
 
@@ -80,6 +93,10 @@ export interface SiteConfig {
   /** Clé du site dans Supabase (site_profiles.site_key, seo_pages.site_key…). */
   siteKey: string;
   name: string;
+  /** Sous-titre du logo texte (header, footer). */
+  brandSubtitle?: string;
+  /** Logo image ; absent = nom du site en texte. */
+  logo?: ImageRef & { width: number; height: number };
   tagline: string;
   description: string;
   /** URL canonique de production, sans slash final. */
@@ -110,6 +127,11 @@ export interface SiteConfig {
   /** Image OpenGraph (1200×630) dans /public. */
   ogImage: string;
   navigation: NavItem[];
+  /** Tons du chrome — partie du skin (anti-footprint). */
+  theme: {
+    header: "light" | "dark";
+    footer: "light" | "dark";
+  };
 
   /**
    * Rubrique des pages service : les pages CMS publiées sous
@@ -140,6 +162,8 @@ export interface SiteConfig {
     /** CTA secondaire des pages (à côté d'« Appeler »). */
     ctaSecondaryLabel: string;
     ctaSecondaryHref: string;
+    /** Libellé du bouton téléphone du header (défaut : « Appeler »). */
+    headerCta?: string;
   };
 
   /** Composition de l'accueil — l'ordre des blocs EST le squelette de la page. */
@@ -149,8 +173,10 @@ export interface SiteConfig {
       variant: HeroVariant;
       badge: string;
       title: string;
+      /** Fin du titre rendue en couleur d'accent (« le meilleur »). */
+      titleAccent?: string;
       text: string;
-      /** Requise pour les variantes B et C. */
+      /** Requise pour la variante B ; optionnelle pour C et D. */
       image?: ImageRef;
       secondaryLabel: string;
     };
@@ -167,11 +193,33 @@ export interface SiteConfig {
       badge: string;
       title: string;
       paragraphs: string[];
+      /** Arguments en grille (2 × 2). */
+      points?: { title: string; body: string }[];
+      /** Panneau chiffré — utilisé quand il n'y a pas d'image. */
       stats: { label: string; value: string }[];
       note: string;
+      /** Photo du panneau droit (remplace les chiffres). */
+      image?: ImageRef;
+      /** Citation posée sur la photo. */
+      quote?: { text: string; author: string };
+    };
+    /** Galerie avant / après — rien ne s'affiche sans image. */
+    gallery?: {
+      badge: string;
+      title: string;
+      text: string;
+      pairs: { before: ImageRef; after: ImageRef }[];
+      images: ImageRef[];
+      link?: NavItem;
     };
     faq: { q: string; a: string }[];
-    cta: { badge: string; title: string; text: string };
+    cta: {
+      badge: string;
+      title: string;
+      text: string;
+      /** Réassurances listées à côté du CTA. */
+      points?: string[];
+    };
   };
 
   blog: { title: string; metaDescription: string; intro: string };
@@ -200,15 +248,16 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  siteKey: "starter-demo",
-  name: "Artisan Démo",
-  tagline: "Le site de démonstration du template — à remplacer entièrement",
+  siteKey: "dls",
+  name: "D&L.S Motors",
+  brandSubtitle: "Nettoyage & esthétique automobile",
+  tagline: "Nettoyage auto premium à Perpignan",
   description:
-    "Site de démonstration du template CMS. Chaque texte de ce fichier doit être réécrit pour le site instancié : c'est le seul fichier à remplir.",
-  url: "https://exemple.fr",
-  phone: "0400000000",
-  phoneFormatted: "04 00 00 00 00",
-  email: "contact@exemple.fr",
+    "Nettoyage et esthétique automobile à Perpignan : nettoyage intérieur, lavage extérieur à la main, formule complète et detailing. À domicile ou sur notre centre.",
+  url: "https://dlsmotors.fr",
+  phone: "0612345678",
+  phoneFormatted: "06 12 34 56 78",
+  email: "contact@dlsmotors.fr",
   address: {
     streetAddress: "Perpignan",
     postalCode: "66000",
@@ -216,187 +265,300 @@ export const siteConfig: SiteConfig = {
     addressRegion: "Pyrénées-Orientales",
     addressCountry: "FR",
   },
-  openingHours: "Lundi – Samedi : 8h – 19h",
-  openingHoursSpec: [
-    {
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ],
-      opens: "08:00",
-      closes: "19:00",
-    },
-  ],
+  openingHours: "Sur rendez-vous, à domicile ou sur notre centre",
+  openingHoursSpec: [],
   schema: {
-    type: "LocalBusiness",
+    type: "AutoWash",
     priceRange: "€€",
-    areaServed: "Perpignan et Pyrénées-Orientales (66)",
+    areaServed: "Perpignan et alentours (66)",
     geo: { latitude: 42.6887, longitude: 2.8948 },
   },
   knowsAbout: [
-    "Service exemple un",
-    "Service exemple deux",
-    "Service exemple trois",
+    "Nettoyage intérieur de véhicule",
+    "Lavage extérieur à la main",
+    "Detailing automobile",
+    "Traitement céramique",
+    "Correction de peinture",
+    "Désinfection d'habitacle",
   ],
   ogImage: "/og/og-image.jpg",
   navigation: [
     { label: "Accueil", href: "/" },
-    { label: "Nos services", href: "/prestations" },
-    { label: "Avis", href: "/avis" },
+    { label: "Nos prestations", href: "/prestations" },
+    { label: "Avis clients", href: "/avis" },
     { label: "Contact", href: "/contact" },
   ],
+  theme: { header: "dark", footer: "dark" },
 
   sectionRoot: "prestations",
-  sectionLabel: "Nos services",
+  sectionLabel: "Nos prestations",
   hub: {
-    metaTitle: "Nos services à Perpignan (66)",
+    metaTitle: "Nettoyage auto à Perpignan : nos prestations",
     metaDescription:
-      "Tous nos services à Perpignan et dans les Pyrénées-Orientales. Devis gratuit, intervention rapide.",
-    title: "Tous nos services à Perpignan.",
+      "Nettoyage intérieur, lavage extérieur à la main, formule complète et detailing à Perpignan. À domicile ou sur notre centre, sur rendez-vous.",
+    title: "Un soin sur-mesure pour chaque véhicule.",
     intro:
-      "Nous intervenons dans tout le 66 avec devis gratuit et intervention rapide. Décrivez votre besoin au téléphone, nous nous occupons du reste.",
+      "Du simple nettoyage à la rénovation complète, D&L.S Motors vous propose des formules adaptées à vos besoins, à domicile ou sur notre centre à Perpignan.",
   },
   services: [
     {
-      slug: "service-exemple-perpignan",
-      title: "Service exemple",
-      shortTitle: "Service exemple",
-      keyword: "service exemple perpignan",
-      tagline: "Une phrase d'accroche qui donne envie d'appeler",
+      slug: "nettoyage-interieur-voiture-perpignan",
+      title: "Nettoyage intérieur de voiture à Perpignan",
+      shortTitle: "Nettoyage intérieur",
+      keyword: "nettoyage intérieur voiture perpignan",
+      tagline: "Un habitacle propre, sain et désinfecté",
       description:
-        "Deux ou trois phrases qui décrivent la prestation, la zone couverte et ce qui la différencie. C'est le texte de la carte, pas celui de la page.",
-      badgeLeft: "Tout le 66",
-      badgeRight: "Devis gratuit",
+        "Aspiration, dépoussiérage, nettoyage des plastiques, vitres, sièges, désinfection.",
+      badgeLeft: "À domicile ou sur centre",
+      badgeRight: "Sur rendez-vous",
       featured: true,
+      price: "À partir de 49 €",
+      image: {
+        src: "/images/prestations/nettoyage-interieur.jpg",
+        alt: "Habitacle en cuir noir après nettoyage intérieur",
+      },
+    },
+    {
+      slug: "lavage-exterieur-voiture-perpignan",
+      title: "Nettoyage extérieur de voiture à Perpignan",
+      shortTitle: "Nettoyage extérieur",
+      keyword: "lavage voiture à la main perpignan",
+      tagline: "Lavage à la main, brillance longue durée",
+      description:
+        "Lavage à la main, jantes, protection carrosserie, brillance longue durée.",
+      badgeLeft: "À domicile ou sur centre",
+      badgeRight: "Sur rendez-vous",
+      featured: true,
+      price: "À partir de 39 €",
+      image: {
+        src: "/images/prestations/nettoyage-exterieur.jpg",
+        alt: "Carrosserie recouverte de mousse pendant un lavage à la main",
+      },
+    },
+    {
+      slug: "nettoyage-complet-voiture-perpignan",
+      title: "Nettoyage complet de voiture à Perpignan",
+      shortTitle: "Formule complète",
+      keyword: "nettoyage complet voiture perpignan",
+      tagline: "Intérieur + extérieur, comme neuf",
+      description:
+        "Intérieur + extérieur pour un résultat impeccable, comme neuf.",
+      badgeLeft: "À domicile ou sur centre",
+      badgeRight: "Sur rendez-vous",
+      featured: true,
+      price: "À partir de 79 €",
+      highlight: "Le plus populaire",
+      image: {
+        src: "/images/prestations/formule-complete.jpg",
+        alt: "Avant de voiture noire brillante après une formule complète",
+      },
+    },
+    {
+      slug: "detailing-voiture-perpignan",
+      title: "Detailing automobile à Perpignan",
+      shortTitle: "Detailing premium",
+      keyword: "detailing perpignan",
+      tagline: "Rénovation en profondeur de votre véhicule",
+      description:
+        "Rénovation en profondeur, traitement céramique, correction de peinture.",
+      badgeLeft: "Sur notre centre",
+      badgeRight: "Devis personnalisé",
+      featured: true,
+      price: "Sur devis",
+      image: {
+        src: "/images/prestations/detailing.jpg",
+        alt: "Polissage d'une carrosserie à la polisseuse orbitale",
+      },
     },
   ],
 
   labels: {
-    serviceBadge: "À Perpignan et dans le 66",
-    articleBadge: "Le blog",
-    serviceCategory: "Services aux particuliers",
-    faqTitle: "Tout ce que vous voulez savoir avant de nous appeler.",
+    serviceBadge: "Nettoyage auto à Perpignan",
+    articleBadge: "Conseils",
+    serviceCategory: "Nettoyage et esthétique automobile",
+    faqTitle: "Tout ce que vous voulez savoir avant de réserver.",
     faqText:
       "Une question qui n'est pas ici ? Appelez-nous, nous prenons le temps d'y répondre.",
     relatedTitle: "À découvrir aussi",
-    ctaSecondaryLabel: "Demander un devis gratuit",
+    ctaSecondaryLabel: "Prendre rendez-vous",
     ctaSecondaryHref: "/contact",
+    headerCta: "Prendre rendez-vous",
   },
 
   home: {
     blocks: [
       "hero",
       "usps",
-      "intro",
       "services",
-      "catalog",
       "why",
       "reviews",
+      "gallery",
       "faq",
       "cta",
     ],
     hero: {
-      variant: "A",
-      badge: "Artisan Démo · Perpignan & 66",
-      title: "Le titre principal du site, avec la requête cible dedans.",
-      text: "Deux phrases qui disent ce que fait l'entreprise, où, et pourquoi appeler maintenant. Devis gratuit, intervention rapide.",
-      secondaryLabel: "Voir nos services",
+      variant: "D",
+      badge: "Perpignan & alentours",
+      title: "Votre véhicule mérite",
+      titleAccent: "le meilleur",
+      text: "Nettoyage auto premium à Perpignan. Un véhicule plus propre, plus sain, plus valorisé.",
+      secondaryLabel: "Voir nos prestations",
+      // image: { src: "/images/hero.jpg", alt: "Voiture noire lustrée devant le Castillet, Perpignan" },
     },
     usps: [
       {
-        title: "Devis gratuit",
-        body: "Évaluation sans engagement, au téléphone ou sur place.",
+        title: "Résultat haut de gamme",
+        body: "Un travail soigné, jusque dans les moindres recoins.",
       },
       {
-        title: "Intervention rapide",
-        body: "Nous intervenons vite, dans tout le département.",
+        title: "Produits éco-responsables",
+        body: "Des produits respectueux de votre véhicule et de l'environnement.",
       },
-      { title: "Prix justes", body: "Un tarif annoncé avant, respecté après." },
       {
-        title: "Artisan local",
-        body: "Une entreprise du 66, joignable directement.",
+        title: "À domicile ou sur notre centre",
+        body: "Nous venons à vous, ou vous nous confiez votre véhicule à Perpignan.",
+      },
+      {
+        title: "Satisfaction garantie",
+        body: "Vous repartez avec un véhicule qui vous plaît, sinon on y retourne.",
       },
     ],
     intro: {
       badge: "Notre métier",
-      title: "Un paragraphe pilier qui pose le sujet du site.",
+      title: "Plus qu'un nettoyage, une nouvelle expérience.",
       paragraphs: [
-        "Premier paragraphe : le problème du visiteur, formulé avec ses mots, et la promesse de l'entreprise.",
-        "Deuxième paragraphe : comment ça se passe concrètement, et ce que le client récupère à la fin.",
+        "Un véhicule propre, c'est un véhicule plus sain à vivre au quotidien et plus valorisé le jour de la revente.",
+        "Choisissez votre formule, nous nous occupons du reste : à domicile ou sur notre centre à Perpignan.",
       ],
     },
     servicesSection: {
-      badge: "Nos services phares",
-      title: "Les interventions les plus demandées.",
-      text: "Nos prestations principales — toujours avec devis gratuit.",
+      badge: "Nos prestations",
+      title: "Un soin sur-mesure pour chaque véhicule.",
+      text: "Du simple nettoyage à la rénovation complète, D&L.S Motors vous propose des formules adaptées à vos besoins.",
       othersBadge: "Aussi au programme",
-      othersTitle: "Tous nos services.",
+      othersTitle: "Toutes nos prestations.",
     },
     why: {
-      badge: "Pourquoi nous",
-      title: "Un seul interlocuteur, un travail soigné.",
+      badge: "Pourquoi choisir D&L.S Motors ?",
+      title: "L'expertise du nettoyage auto à Perpignan.",
       paragraphs: [
-        "Paragraphe qui lève les freins : pas de mauvaise surprise, une équipe équipée, un résultat propre.",
-        "Paragraphe qui pousse à l'action : l'évaluation est gratuite, autant appeler.",
+        "Une équipe passionnée, un service de qualité et une vraie proximité avec nos clients. Chez D&L.S Motors, chaque véhicule est traité avec le même soin : le vôtre.",
       ],
-      stats: [
-        { label: "Devis", value: "Gratuit" },
-        { label: "Délai", value: "Rapide" },
-        { label: "Zone", value: "Tout le 66" },
-        { label: "Engagement", value: "Aucun" },
+      points: [
+        {
+          title: "Service rapide et flexible",
+          body: "Un créneau qui s'adapte à votre emploi du temps.",
+        },
+        {
+          title: "Produits haut de gamme",
+          body: "Et éco-responsables, sans agresser vos matériaux.",
+        },
+        {
+          title: "À domicile ou sur notre centre",
+          body: "À Perpignan et dans les environs.",
+        },
+        {
+          title: "Satisfaction garantie",
+          body: "Le résultat compte plus que le chrono.",
+        },
       ],
-      note: "Une ligne de réassurance qui conclut le panneau.",
+      stats: [],
+      note: "Entreprise locale basée à Perpignan.",
+      image: {
+        src: "/images/equipe.jpg",
+        alt: "Membre de l'équipe D&L.S Motors en train de lustrer une carrosserie",
+      },
+      quote: {
+        text: "Des véhicules plus propres pour des routes plus belles.",
+        author: "D&L.S Motors",
+      },
+    },
+    gallery: {
+      badge: "Résultats concrets",
+      title: "Avant / Après",
+      text: "Découvrez la différence D&L.S Motors.",
+      pairs: [
+        {
+          before: {
+            src: "/images/realisations/siege-avant.jpg",
+            alt: "Siège de voiture taché avant nettoyage",
+          },
+          after: {
+            src: "/images/realisations/siege-apres.jpg",
+            alt: "Le même siège, propre, après nettoyage",
+          },
+        },
+      ],
+      images: [
+        {
+          src: "/images/realisations/tableau-de-bord.jpg",
+          alt: "Tableau de bord nettoyé et rénové",
+        },
+        {
+          src: "/images/realisations/jante.jpg",
+          alt: "Jante noire nettoyée et protégée",
+        },
+      ],
     },
     faq: [
       {
-        q: "Une question que les clients posent vraiment au téléphone ?",
-        a: "La réponse, concrète et honnête, en deux ou trois phrases.",
+        q: "Vous vous déplacez à domicile ?",
+        a: "Oui, à Perpignan et dans les environs. Vous pouvez aussi nous confier votre véhicule sur notre centre à Perpignan.",
       },
       {
-        q: "Combien ça coûte ?",
-        a: "La fourchette ou la logique de prix, sans langue de bois.",
+        q: "Quels sont vos tarifs ?",
+        a: "Le nettoyage intérieur démarre à 49 €, le nettoyage extérieur à 39 € et la formule complète à 79 €. Le detailing se chiffre sur devis, selon l'état du véhicule et le traitement souhaité.",
+      },
+      {
+        q: "Quelle différence entre la formule complète et le detailing ?",
+        a: "La formule complète est un nettoyage intérieur et extérieur soigné. Le detailing va plus loin : rénovation en profondeur, correction de peinture et traitement céramique pour protéger la carrosserie durablement.",
+      },
+      {
+        q: "Comment réserver ?",
+        a: "Un appel ou un message WhatsApp suffit : nous convenons ensemble de la formule et du créneau, puis nous confirmons tout de suite.",
       },
     ],
     cta: {
-      badge: "Devis gratuit",
-      title: "Un projet, une question ?",
-      text: "Appelez-nous, décrivez votre situation. Nous vous répondons tout de suite, et le devis est gratuit.",
+      badge: "Prenez rendez-vous",
+      title: "Réservez votre nettoyage auto en un appel.",
+      text: "Choisissez votre prestation, votre créneau, et profitez d'un véhicule impeccable, sans stress.",
+      points: [
+        "À domicile ou sur notre centre à Perpignan",
+        "Confirmation immédiate par téléphone ou WhatsApp",
+        "Modification gratuite jusqu'à 24h avant",
+      ],
     },
   },
 
   blog: {
-    title: "Le blog — nos conseils",
+    title: "Conseils entretien auto",
     metaDescription:
-      "Les conseils de l'équipe : ce que nous répondons le plus souvent au téléphone, posé par écrit.",
+      "Nos conseils pour garder un véhicule propre et bien entretenu entre deux passages chez D&L.S Motors.",
     intro:
-      "Ce que nous répondons le plus souvent au téléphone, posé par écrit.",
+      "Ce que nous répondons le plus souvent à nos clients, posé par écrit.",
   },
   contact: {
     title: "Le plus simple ? Nous appeler.",
-    text: "Décrivez-nous votre besoin : nous vous répondons tout de suite et le devis est gratuit, sans engagement.",
-    whatsappMessage: "Bonjour, je souhaiterais un devis.",
+    text: "Dites-nous quel véhicule, quelle formule et quand : nous confirmons votre créneau tout de suite.",
+    whatsappMessage: "Bonjour, je souhaite réserver un nettoyage auto.",
     zoneText:
-      "Perpignan et son agglomération, et l'ensemble des Pyrénées-Orientales. Au-delà : nous en parlons au téléphone.",
+      "Perpignan et ses alentours, à domicile ou sur notre centre. Au-delà : nous en parlons au téléphone.",
   },
   avis: {
-    title: "La confiance de nos clients du 66.",
+    title: "Ils nous font confiance.",
     metaDescription:
-      "Avis et témoignages de nos clients à Perpignan et dans les Pyrénées-Orientales.",
+      "Avis de nos clients sur le nettoyage et l'esthétique automobile D&L.S Motors à Perpignan.",
     intro: "Les retours de nos clients, ici comme sur notre fiche Google.",
   },
   legal: {
-    activity: "Entreprise de services aux particuliers",
+    activity: "Entreprise de nettoyage et d'esthétique automobile",
   },
 
   catalog: {
-    enabled: true,
+    enabled: false,
     label: "Catalogue",
-    sectionTitle: "Notre catalogue",
-    sectionText: "Nos produits, livrés ou disponibles sur simple appel.",
+    sectionTitle: "Nos produits",
+    sectionText: "",
     ctaLabel: "Commander",
     soldOutLabel: "Épuisé",
   },

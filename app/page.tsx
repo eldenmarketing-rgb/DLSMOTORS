@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import { Hero } from "@/components/blocks/Hero";
 import {
   CtaFinal,
+  Gallery,
   HomeFaq,
   Intro,
   ServicesShowcase,
@@ -44,6 +45,7 @@ const BLOCKS: Record<
   catalog: () => <CatalogHighlights />,
   why: () => <WhyUs />,
   reviews: () => <ReviewsBlock />,
+  gallery: () => <Gallery />,
   faq: () => <HomeFaq />,
   cta: () => <CtaFinal />,
 };

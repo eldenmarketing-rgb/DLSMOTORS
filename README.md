@@ -1,38 +1,43 @@
-# site-starter — template CMS du réseau
+# D&L.S Motors — nettoyage & esthétique automobile, Perpignan
 
-Template Next.js (App Router) pour instancier un site du réseau en une journée.
-Le contenu vit dans Supabase (`seo_pages`, éditées depuis le SEO Dashboard), le
-spécifique au site vit dans **un seul fichier** (`lib/config.ts`) et un **skin**
-(`app/globals.css` + fontes de `app/layout.tsx`). Le reste est générique : les
-corrections se font dans le template, pas dans les copies.
+Site instancié depuis [site-starter](https://github.com/eldenmarketing-rgb/site-starter)
+(remote git `template`). Contenu des pages dans Supabase (`seo_pages`,
+`site_key = dls`), édité depuis le SEO Dashboard. Tout le spécifique au site
+est dans `lib/config.ts`, `data/reviews.ts` et le skin.
 
-## Principes (non négociables)
+## Skin (anti-footprint — combinaison unique dans le réseau)
 
-- **Le CMS gouverne** : dès qu'une page publiée existe en base, c'est elle qui
-  est servie. Le code ne porte que des replis de lancement.
-- **Phone-first** : le CTA principal est le téléphone (`tel:`), numéro visible
-  above the fold ; WhatsApp pré-rempli et formulaire autorisés en appoint.
-- **Anti-footprint** : palette + fontes + variante de hero + ordre des blocs
-  uniques par site (docs/SKINS.md).
-- **Jamais de 404 sur une URL indexée** : renommage → redirection posée dans le
-  dashboard (`redirect_to`, servie en 308) ; produit épuisé → `sold_out`
-  (servi, OutOfStock).
+| Élément | Choix |
+|---|---|
+| Palette | « atelier premium » : charbon (`primary`), or (`accent`, texte sombre dessus via `on-accent`), neutres chauds (`surface`) |
+| Fontes | Outfit (titres) · Plus Jakarta Sans (texte) · Caveat (citations, signature du footer) |
+| Hero | variante **D** — photo plein écran sous voile sombre (dégradé tant que `home.hero.image` n'est pas posée) |
+| Chrome | header et footer sombres (`theme.header` / `theme.footer`) |
+| Blocs | hero · usps · services · why · reviews · gallery · faq · cta |
 
-## Arborescence
+## Ajouts par rapport au template (à reporter dans site-starter)
 
-```
-lib/config.ts        ← LE fichier à remplir par site (+ data/reviews.ts)
-lib/cms.ts           lecture seo_pages (RLS anon, cache par tags)
-lib/catalog.ts       module catalogue (product_categories + products)
-lib/pages-list.ts    services du code ∪ pages CMS (hub, accueil, footer)
-app/[...slug]/       routeur CMS : page publiée → hub → repli config → 308 → 404
-app/categorie/ produit/   module catalogue (opt-in via config)
-app/api/revalidate/  purge du cache, appelée par le dashboard à la publication
-components/blocks/   accueil par blocs (3 variantes de hero)
-components/site/     CmsArticle (rendu des pages dashboard), header, footer
-skins/               palettes alternatives — voir docs/SKINS.md
-docs/NOUVEAU-SITE.md ← checklist d'instanciation pas à pas
-```
+- Hero variante `D` + `titleAccent` (fin de titre en couleur d'accent).
+- `ServiceDef.image` / `price` / `highlight` : cartes de prestation avec visuel,
+  prix et pastille ; grille 4 colonnes dès 4 services phares.
+- `home.why.points` / `image` / `quote` : arguments en grille + photo avec citation.
+- Bloc `gallery` (avant / après + vignettes) — masqué sans image.
+- `home.cta.points` : réassurances listées à côté du CTA final.
+- `theme.header` / `theme.footer` (`light` | `dark`), `brandSubtitle`, `logo`,
+  `labels.headerCta`.
+- Token `--color-on-accent` (texte posé sur l'accent) consommé par `Button` et
+  `ProductCard`, `--font-script` / `.font-script`.
+- `SchemaType` accepte `AutoWash`.
+
+## À faire avant mise en ligne
+
+- Remplacer les images de `public/images/` (découpes du mockup, voir le README
+  du dossier) et poser `home.hero.image`.
+- Valider dans `lib/config.ts` : téléphone (06 12 34 56 78 = valeur du mockup),
+  domaine, email, horaires, réassurances du CTA.
+- `data/reviews.ts` : vrais avis Google uniquement (vide tant qu'il n'y en a pas).
+- Vercel : variables d'env (`.env.example`), deploy hook, DNS ; puis
+  `NEXT_PUBLIC_INDEXABLE=true`.
 
 ## Démarrer
 
@@ -41,6 +46,3 @@ npm install
 cp .env.example .env.local   # remplir les clés
 npm run dev
 ```
-
-`NEXT_PUBLIC_INDEXABLE=false` tant que le site n'est pas prêt : robots.txt
-bloque tout et les pages portent noindex.

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Inter } from "next/font/google";
+import { Caveat, Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { siteConfig } from "@/lib/config";
@@ -12,17 +12,25 @@ import "./globals.css";
  * --font-heading : globals.css les consomme avec des piles de repli système,
  * une fonte absente ne cassera jamais l'affichage.
  */
-const body = Inter({
+const body = Plus_Jakarta_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
 
-const heading = Archivo({
+const heading = Outfit({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
   weight: ["600", "700", "800"],
+});
+
+/* Fonte manuscrite des citations et de la signature du footer. */
+const accent = Caveat({
+  variable: "--font-accent",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["500", "600"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.url;
@@ -118,7 +126,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${body.variable} ${heading.variable} h-full antialiased`}
+      className={`${body.variable} ${heading.variable} ${accent.variable} h-full antialiased`}
     >
       <head>
         <script
