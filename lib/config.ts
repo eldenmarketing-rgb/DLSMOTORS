@@ -494,12 +494,12 @@ export const siteConfig: SiteConfig = {
       pairs: [
         {
           before: {
-            src: "/images/realisations/siege-avant.jpg",
-            alt: "Siège de voiture taché avant nettoyage",
+            src: "/images/realisations/interieur-avant.jpg",
+            alt: "Habitacle sale avant nettoyage : sièges poussiéreux, tapis couverts de terre et de feuilles",
           },
           after: {
-            src: "/images/realisations/siege-apres.jpg",
-            alt: "Le même siège, propre, après nettoyage",
+            src: "/images/realisations/interieur-apres.jpg",
+            alt: "Le même habitacle après nettoyage intérieur : cuir et tapis impeccables",
           },
         },
       ],

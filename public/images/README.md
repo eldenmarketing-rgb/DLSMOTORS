@@ -8,7 +8,7 @@ Les fichiers de ce dossier sont des **découpes basse définition du mockup**
 | `hero-castillet.jpg` | fond du hero (`home.hero.image` dans lib/config.ts) | 1920×1080, sujet à droite |
 | `prestations/*.jpg` | cartes des 4 formules (accueil) | 800×600 |
 | `equipe.jpg` | photo du bloc « Pourquoi nous » | 900×1100 (portrait) |
-| `realisations/siege-avant.jpg` / `siege-apres.jpg` | paire avant / après | 800×600, même cadrage |
+| `realisations/interieur-avant.jpg` / `interieur-apres.jpg` | paire avant / après (VRAIES images fournies le 2026-09-10) | même cadrage obligatoire |
 | `realisations/tableau-de-bord.jpg`, `jante.jpg` | vignettes réalisations | 800×600 |
 
 Le logo image est optionnel (`siteConfig.logo`) : sans lui, le nom et le
